@@ -3,7 +3,8 @@ import { Repository, DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { User } from './user.entity';
-import { SignUpDto } from 'src/register/dto/register-signup.dto';
+import TextPick from 'src/@i18n/pick.i18n';
+import { SignUpRequestDto } from 'src/register/dto/signup-request.dto';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -11,19 +12,26 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async createUser(signUpDto: SignUpDto) {
-    const { name, password, login } = signUpDto;
+  async createUser(signUpDto: SignUpRequestDto) {
+    const { name, password, login, language } = signUpDto;
 
-    const loginInUse = await this.find({ where: { login } });
+    const loginInUse = await this.findOne({ where: { login } });
 
     if (loginInUse) {
-      throw new UnprocessableEntityException('login in use');
+      throw new UnprocessableEntityException(
+        TextPick.Modules.Register.http422.loginInUse,
+      );
     }
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = this.create({ name, login, password: hashedPassword });
+    const user = this.create({
+      name,
+      login,
+      password: hashedPassword,
+      language,
+    });
 
     await this.save(user);
   }

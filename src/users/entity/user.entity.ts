@@ -1,9 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+import { Languages } from 'src/@i18n/enum/languages.enum';
+
+@Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   name: string;
@@ -13,4 +15,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  language: Languages;
 }
