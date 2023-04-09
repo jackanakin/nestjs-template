@@ -6,13 +6,6 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationController {
   constructor(private authService: AuthenticationService) {}
 
-  @Post('/signup')
-  signUp(
-    @Body() authCredentialsDto: AuthenticationCredentialsDto,
-  ): Promise<void> {
-    return this.authService.signUp(authCredentialsDto);
-  }
-
   @Post('/signin')
   signIn(
     @Body() authCredentialsDto: AuthenticationCredentialsDto,
