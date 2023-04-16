@@ -6,6 +6,7 @@ import { SignInRequestDto } from './dto/signin-request.dto';
 import { UserRepository } from '../users/entity/user.repository';
 import { JwtPayload } from './config/jwt-payload.interface';
 import { SignInResponseDto } from './dto/signin-response.dto';
+import TextPick from 'src/@i18n/pick.i18n';
 
 @Injectable()
 export class AuthenticationService {
@@ -14,18 +15,20 @@ export class AuthenticationService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(signInDto: SignInRequestDto): Promise<SignInResponseDto> {
-    const { password, login } = signInDto;
+  async create(signInDto: SignInRequestDto): Promise<SignInResponseDto> {
+    const { password, email } = signInDto;
 
-    const user = this.userRepository.findOne({ where: { login } });
+    const user = await this.userRepository.findOne({ where: { email } });
 
-    if (user && bcrypt.compare(password, (await user).password)) {
-      const payload: JwtPayload = { login };
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload: JwtPayload = { email };
       const accessToken = await this.jwtService.sign(payload);
 
       return { accessToken };
     } else {
-      throw new UnauthorizedException('Wrong credentials');
+      throw new UnauthorizedException(
+        TextPick.Common.Authorization.wrongCredentials,
+      );
     }
   }
 }

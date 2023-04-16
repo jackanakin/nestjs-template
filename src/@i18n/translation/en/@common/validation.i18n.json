@@ -1,3 +1,5 @@
 {
-  "validation.weakPassword": "Weak password"
+  "validation.weakPassword": "Weak password",
+  "validation.invalidLanguage": "Unsupported language",
+  "validation.invalidEmail": "Invalid e-mail"
 }

@@ -1,3 +1,3 @@
 export enum Register422 {
-  loginInUse = 'register.422.loginInUse',
+  emailInUse = 'register.422.emailInUse',
 }

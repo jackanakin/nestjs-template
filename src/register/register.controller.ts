@@ -1,37 +1,30 @@
-import {
-  Body,
-  Controller,
-  Logger,
-  Patch,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { SignUpRequestDto } from './dto/signup-request.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { RegisterService } from './register.service';
 import { GetUser } from 'src/authentication/config/get-user.decorator';
-import { User } from 'src/users/entity/user.entity';
+import { PartialUserDto } from './dto/patch-user.dto';
 
 @Controller('register')
 export class RegisterController {
-  private logger: Logger = new Logger('RegisterController');
-
   constructor(private registerService: RegisterService) {}
 
   @Post()
-  async signUp(
-    @Req() request: Request,
-    @Body() signUpDto: SignUpRequestDto,
-  ): Promise<void> {
-    await this.registerService.signUp(signUpDto);
+  async post(@Body() userDto: UserDto): Promise<void> {
+    await this.registerService.signUp(userDto);
+
     return;
   }
 
   @UseGuards(AuthGuard())
   @Patch()
-  async update(@GetUser() user: User): Promise<void> {
+  async patch(
+    @GetUser() user,
+    @Body() patchDto: PartialUserDto,
+  ): Promise<void> {
+    await this.registerService.patch(patchDto, user.id);
+
     return;
   }
 }

@@ -1,4 +1,5 @@
 import { i18n } from 'i18next';
+
 import { User } from 'src/users/entity/user.entity';
 
 export default class i18nManager {

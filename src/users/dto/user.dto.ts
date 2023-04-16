@@ -1,23 +1,29 @@
 import {
+  IsEmail,
   IsEnum,
   IsString,
   Matches,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
+
 import { Languages } from 'src/@i18n/enum/languages.enum';
 import TextPick from 'src/@i18n/pick.i18n';
+import { IsUserAlreadyExist } from '../../register/validators/user.validator';
+import { BaseDto } from 'src/@base/dto/base.dto';
 
-export class SignUpRequestDto {
+export class UserDto extends BaseDto {
   @IsString()
   @MinLength(4)
   @MaxLength(50)
   name: string;
 
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  login: string;
+  @IsEmail({}, { message: TextPick.Common.Validation.invalidEmail })
+  @Validate(IsUserAlreadyExist, {
+    message: TextPick.Common.Validation.emailInUse,
+  })
+  email: string;
 
   @IsString()
   @MinLength(8)
