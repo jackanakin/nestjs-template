@@ -7,6 +7,7 @@ export class LoggerMiddleware implements NestMiddleware {
 
   use(request: Request, response: Response, next: NextFunction) {
     const { ip, method, originalUrl: url } = request;
+    const remotePort = request.client.remotePort;
     const userAgent = request.get('user-agent') || '';
 
     response.on('close', () => {
@@ -14,7 +15,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const contentLength = response.get('content-length');
 
       this.logger.log(
-        `${method} ${statusCode} ${url} ${contentLength} - ${userAgent} ${ip} - userId:${request.user?.id}`,
+        `${method} ${statusCode} ${url} ${contentLength} - ${userAgent} ${ip}:${remotePort} - userId:${request.user?.id}`,
       );
     });
 

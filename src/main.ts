@@ -3,6 +3,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 
 import * as i18nConfig from './@config/i18n/i18n.config';
+import * as swaggerConfig from './@config/swagger/swagger.config';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './@interceptors/transform.interceptor';
@@ -30,6 +31,8 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  swaggerConfig.init(app);
 
   await app.listen(port);
 

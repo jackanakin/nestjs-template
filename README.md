@@ -72,11 +72,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
+## Done:
+Basic Authentication - Bearer Token
+API Documentation - Swagger
+Database - PostgreSQL
+Internacionalization - i18n
+Rate limiter - nestjs/throttler
+LoggerMiddleware - console.log(ip:port, method, userId)
+ExceptionLogger - 4xx, 5xx
 
 ## TODO:
-Rate limiter (brute force - redis)
 Requests pagination
 metric collector
-swagger
 websocket
 oAuth
+file upload/download operations (public/private)
